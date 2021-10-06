@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tst.youkumenu.MainActivity"
+    android:background="@color/black">
+
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/icon_home"
+       android:contentDescription="@string/tst" />
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_home"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/tst" />
+
+
+    <ImageView
+        android:id="@+id/center_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_home"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/tst"/>
+
+<!--    异方对齐 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_home"
+        android:layout_above="@id/center_icon"
+        android:layout_toLeftOf="@id/center_icon"
+        android:layout_toStartOf="@id/center_icon"
+        android:contentDescription="@string/tst"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_home"
+        android:layout_below="@id/center_icon"
+        android:layout_toRightOf="@id/center_icon"
+        android:layout_toEndOf="@id/center_icon"
+        android:contentDescription="@string/tst"/>
+
+
+<!--    同方对齐 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/channel1"
+        android:layout_alignTop="@+id/center_icon"
+
+        android:layout_alignLeft="@+id/center_icon"
+        android:layout_alignStart="@+id/center_icon"
+        android:contentDescription="@string/tst"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/channel1"
+
+        android:layout_alignBottom="@+id/center_icon"
+        android:layout_alignRight="@+id/center_icon"
+        android:layout_alignEnd="@+id/center_icon"
+        android:contentDescription="@string/tst"/>
+
+</RelativeLayout>

@@ -1,0 +1,5 @@
+include ':customAttr'
+include ':shape'
+include ':app'
+include ':youkumenu'   // multiMoudule
+rootProject.name = "CustomerView"

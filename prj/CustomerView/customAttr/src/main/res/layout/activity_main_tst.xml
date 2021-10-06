@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_custome_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.tst.customattr.CustomView
+        android:id="@+id/custom_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:background="@color/black"
+        app:color_1="@color/red"
+        app:font_1="16sp"
+        app:text="hello world"/>
+
+
+</RelativeLayout>
+

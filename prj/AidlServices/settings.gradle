@@ -1,0 +1,4 @@
+include ':aidlclient'
+include ':aidlserver'
+include ':app'
+rootProject.name = "AidlServices"  //root project name

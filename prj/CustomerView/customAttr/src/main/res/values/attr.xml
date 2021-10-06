@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    common attr -->
+    <attr name="text" format="string"/>
+
+    <declare-styleable name="CustomAttr">
+
+        <attr name="color_1" format="color"/>
+
+        <attr name="font_1" format="dimension"/>
+
+        <attr name="text" />
+
+        <attr name="type" format="enum">
+            <enum name="common" value="1"/>
+            <enum name="material" value="2"/>
+        </attr>
+
+        <attr name="flag">
+            <flag name="flag1" value="0x01"/>
+            <flag name="flag2" value="0x02"/>
+            <flag name="flag4" value="0x04"/>
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="CustomViewZero">
+        <attr name="fontsize" format="dimension"/>
+        <attr name="color" format="color"/>
+        <attr name="text"/>
+    </declare-styleable>
+
+</resources>
