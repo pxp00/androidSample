@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">customView</string>
+    <string name = "customText">lpo_hb</string>
+</resources>

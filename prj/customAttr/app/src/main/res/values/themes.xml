@@ -1,0 +1,42 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.CustomView" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#ff0000</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:text">@string/app_name</item>
+        <item name="text_def">@string/app_name</item>
+
+        <item name="color_tst">?colorPrimary</item>
+        <item name="viewInflaterClass">B_noR</item>
+        <item name="title">Theme_title</item>
+        <item name="defStyleAttr">@style/defStyle_attr</item>
+    </style>
+
+    <style name = "defStyle_attr">
+        <item name="title">themeStyle_attr_title</item>
+    </style>
+
+<!--
+    1. define defStyleAttr(attr.xml): <attr name = defStyleAttr format = "reference"/>
+
+    2.1. add defStyleAttr on theme(style.xml):  <item name = "defStyleAttr">@style/themeStyleAttr</item>
+    2.2. define themeStyleAttr(style.xml):<style name = "themeStyleAttr"><item name = "title">themeStyle_title</item> </style>
+
+    3.1 add attr_title to MyTextView(attr.xml) <declare-styleable name = "MyTextView"> <attr name = "item" /> </declare-styleable>
+    3.2 obtainAttr(MyTextView.java) obtainStyledAttributes(attrSet, R.styleable.MyTextView, R.attr.defStyleAttr, 0);
+
+sum
+    1. themeStyleAttr(must add on obtainStyledAttributes 3rd param) > themeAttr
+    2. viewAttr > viewStyleAttr
+-->
+
+</resources>

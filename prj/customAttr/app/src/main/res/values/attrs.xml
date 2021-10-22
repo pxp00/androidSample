@@ -1,0 +1,29 @@
+<resources>
+<!--   define customize attr  -->
+    <attr name="text" format="string" />
+
+    <attr name = "defStyleAttr" format = "reference"/>
+
+    <declare-styleable name="MyTextView">
+<!--    attr name could same as system attr, use name space to distinguish  -->
+
+<!--     add attr to array (R.styleable.name)-->
+        <attr name = "text"/>
+<!--        <attr name="text" format="string" />-->
+
+        <attr name="text_def" format="string" />
+        <attr name = "color_tst" format="color"/>
+
+        <!--    1. define a attr; 2. add to array -->
+        <attr name="testAttr" format="integer" />
+
+<!--    add system attr to  array (R.styleable.name)  -->
+        <attr name = "android:text"/>
+
+<!--    add other customize attr to array -->
+        <attr name = "colorPrimary"/>
+        <attr name = "viewInflaterClass"/>
+        <attr name = "title"/>
+
+    </declare-styleable>
+</resources>
