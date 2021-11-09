@@ -9,6 +9,32 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+/**
+retrieve: bindingView; butterKnife;
+reqs: move a icon on parentView, couldn't over the parentView;
+flow:
+	1. imageView(customer) lsr.onTouch return true;
+	2. action = down
+        a. get lastX, lastY (compare to parentVeiw);
+		b. get initial imageView Left, Top, Right, Bottom;
+	        lastL  = imageView.getLeft();
+	        lastT = imageView.getTop();
+	        lastR = imageView.getRight();
+	        lastB = imageView.getBottom();
+        c. get pareView maxR, maxB;
+	3. action = move
+        a. get evX, evY;
+	    b. dX = evX - lastX;  dY = evY - lastY;  V1 + dV = V2
+        c.
+		   lastL = lastL + dX;   if(lastL < 0) {lastR = lastR + (0 - lastL); lastL = lastL + (0 -lastL); }  // V1 - V0 = dV  V1(final state) = V0 + dV
+		   lastT = lastT + dY;   if(lastT < 0) ...
+
+		   lastR = lastR + dX;   if(lastR > pR){ lastL = LastL + (pR -lastR); lastR = lastR + (pR - lastR);} // pR (final state) =
+		   lastB = lastB + dY;
+ coding:
+
+ * */
+
 public class MainActivity extends Activity implements OnTouchListener {
 
 	private ImageView iv_main;
@@ -22,11 +48,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 		iv_main = (ImageView) findViewById(R.id.iv_main);
 		
 		parentView = (RelativeLayout) iv_main.getParent();
-		/*
-		int right = parentView.getRight(); //0
-		int bottom = parentView.getBottom();   //0
-		Toast.makeText(this, right+"---"+bottom, 1).show();
+
+		/**
+		 after onResume -> onAttachToWindow, will do onMeasure onLayout, so onCreate couldn't get the size(height, width) of View
+
+			int right = parentView.getRight(); //0
+			int bottom = parentView.getBottom();   //0
+			Toast.makeText(this, right+"---"+bottom, 1).show();
 		*/
+
 		//设置touch监听 
 		iv_main.setOnTouchListener(this);
 	}
@@ -49,8 +79,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				maxRight = parentView.getRight();
 				maxBottom = parentView.getBottom();
 			}
-			
-			
+
 			//第一次记录lastX/lastY
 			lastX =eventX;
 			lastY = eventY;
@@ -67,7 +96,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			
 			//限制left  >=0
 			if(left<0) {
-				right += -left;
+				right += (0 -left); // V1 = V0 + dV;
 				left = 0;
 			}
 			//限制top
