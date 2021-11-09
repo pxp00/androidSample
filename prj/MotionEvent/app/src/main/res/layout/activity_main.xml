@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+      <com.eg.motionevent.G1
+          android:layout_width="match_parent"
+          android:layout_height="480px"
+          android:background="#ffff00"
+          >
+        <com.eg.motionevent.G2
+            android:id="@+id/g2"
+            android:layout_width="match_parent"
+            android:layout_height="320px"
+            android:background="#ff00ff"
+            >
+
+             <com.eg.motionevent.V3
+                 android:layout_width="match_parent"
+                 android:layout_height="160px"
+                 android:background="#ff0000"
+                 android:text="V3"
+                 />
+
+          </com.eg.motionevent.G2>
+      </com.eg.motionevent.G1>
+</LinearLayout>
