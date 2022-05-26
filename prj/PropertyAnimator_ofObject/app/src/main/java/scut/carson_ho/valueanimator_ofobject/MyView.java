@@ -11,6 +11,26 @@ import android.view.View;
 /**
  * Created by Carson_Ho on 17/4/18.
  */
+
+/*
+    reqs: circle from (70,70) => (700, 1000)
+        1.animator // change props
+        2.->invalidate() ->onDraw()
+
+    animator = ValueAnimator.ofObject(xEvaluator, objStart, objEnd)
+    animator.addUpdateLsr(lsr(){
+        onAnimationUpdate(animator){
+            objRet = (objType)animator.getAnimatedValue();
+            invalidate() -> onDraw()
+        }
+    })
+
+    xEvaluator // onEvaluate(frac, objStart, objEnd) => objRet
+        ->lsr.onAnimationUpdate(animator)
+        ->objRet = animator.getAnimatedValue()
+
+
+ * */
 public class MyView extends View {
     // 设置需要用到的变量
     public static final float RADIUS = 70f;// 圆的半径 = 70
@@ -22,7 +42,7 @@ public class MyView extends View {
         super(context, attrs);
         // 初始化画笔
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(Color.RED);
     }
 
     // 复写onDraw()从而实现绘制逻辑
@@ -72,8 +92,6 @@ public class MyView extends View {
 
             anim.start();
             // 启动动画
-
-
         } else {
             // 如果坐标值不为0,则画圆
             // 所以坐标值每改变一次,就会调用onDraw()一次,就会画一次圆,从而实现动画效果

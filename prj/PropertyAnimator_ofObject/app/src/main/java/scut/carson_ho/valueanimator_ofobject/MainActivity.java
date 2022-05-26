@@ -12,9 +12,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**
+            reqs: circle  blue => red
+            anim = ObjectAnimator.ofObject(view, "propX", propXEvaluator, objStart, objEnd)
+            anim.start();
+         */
+
+        /**
+             0. ofObject(viewX, "propX", evaluator, objStrat, objEnd)
+             1.evalute(frac, objStart, objEnd) => objRet
+             2.->viewX.setPropX(objRet) ->mPaint, invalidate() -> onDraw()
+         */
+
         myView2 = (MyView2) findViewById(R.id.MyView2);
-        ObjectAnimator anim = ObjectAnimator.ofObject(myView2, "color", new ColorEvaluator(),
-                "#0000FF", "#FF0000");
+        ObjectAnimator anim = ObjectAnimator.ofObject(myView2, "propX", new ColorEvaluator(), "#0000FF", "#FF0000");
         anim.setDuration(8000);
         anim.start();
     }

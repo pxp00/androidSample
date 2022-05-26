@@ -6,18 +6,16 @@ import android.animation.TypeEvaluator;
  * Created by Carson_Ho on 17/4/18.
  */
 public class ColorEvaluator implements TypeEvaluator {
+
     // 实现TypeEvaluator接口
-
     private int mCurrentRed;
-
     private int mCurrentGreen ;
-
     private int mCurrentBlue ;
 
     // 复写evaluate（）
     // 在evaluate（）里写入对象动画过渡的逻辑:此处是写颜色过渡的逻辑
     @Override
-    public Object evaluate(float fraction, Object startValue, Object endValue) {
+    public Object evaluate(float fraction, Object startValue, Object endValue) { // frac, objStart, objEnd => objRet ->view.setPropX(objRet) ->mPaint, invalidate() -> onDraw()
 
         // 获取到颜色的初始值和结束值
         String startColor = (String) startValue;
@@ -29,14 +27,14 @@ public class ColorEvaluator implements TypeEvaluator {
         int startGreen = Integer.parseInt(startColor.substring(3, 5), 16);
         int startBlue = Integer.parseInt(startColor.substring(5, 7), 16);
 
-        int endRed = Integer.parseInt(endColor.substring(1, 3), 16);
+        int endRed = Integer.parseInt(endColor.substring(1, 3), 16);  // str => int: Integer.parseInt(str, radix)
         int endGreen = Integer.parseInt(endColor.substring(3, 5), 16);
         int endBlue = Integer.parseInt(endColor.substring(5, 7), 16);
 
         // 将初始化颜色的值定义为当前需要操作的颜色值
-            mCurrentRed = startRed;
-            mCurrentGreen = startGreen;
-            mCurrentBlue = startBlue;
+        mCurrentRed = startRed;
+        mCurrentGreen = startGreen;
+        mCurrentBlue = startBlue;
 
 
         // 计算初始颜色和结束颜色之间的差值
@@ -46,20 +44,17 @@ public class ColorEvaluator implements TypeEvaluator {
         int greenDiff = Math.abs(startGreen - endGreen);
         int blueDiff = Math.abs(startBlue - endBlue);
         int colorDiff = redDiff + greenDiff + blueDiff;
+
         if (mCurrentRed != endRed) {
-            mCurrentRed = getCurrentColor(startRed, endRed, colorDiff, 0,
-                    fraction);
+            mCurrentRed = getCurrentColor(startRed, endRed, colorDiff, 0, fraction);
                     // getCurrentColor()决定如何根据差值来决定颜色变化的快慢 ->>关注1
         } else if (mCurrentGreen != endGreen) {
-            mCurrentGreen = getCurrentColor(startGreen, endGreen, colorDiff,
-                    redDiff, fraction);
+            mCurrentGreen = getCurrentColor(startGreen, endGreen, colorDiff, redDiff, fraction);
         } else if (mCurrentBlue != endBlue) {
-            mCurrentBlue = getCurrentColor(startBlue, endBlue, colorDiff,
-                    redDiff + greenDiff, fraction);
+            mCurrentBlue = getCurrentColor(startBlue, endBlue, colorDiff, redDiff + greenDiff, fraction);
         }
         // 将计算出的当前颜色的值组装返回
-        String currentColor = "#" + getHexString(mCurrentRed)
-                + getHexString(mCurrentGreen) + getHexString(mCurrentBlue);
+        String currentColor = "#" + getHexString(mCurrentRed) + getHexString(mCurrentGreen) + getHexString(mCurrentBlue);  // int  => strHex
 
         // 由于我们计算出的颜色是十进制数字，所以需要转换成十六进制字符串:调用getHexString()->>关注2
         // 最终将RGB颜色拼装起来,并作为最终的结果返回
@@ -69,9 +64,7 @@ public class ColorEvaluator implements TypeEvaluator {
 
     // 关注1:getCurrentColor()
     // 具体是根据fraction值来计算当前的颜色。
-
-    private int getCurrentColor(int startColor, int endColor, int colorDiff,
-                                int offset, float fraction) {
+    private int getCurrentColor(int startColor, int endColor, int colorDiff, int offset, float fraction) { // 0000ff => ff0000
         int currentColor;
         if (startColor > endColor) {
             currentColor = (int) (startColor - (fraction * colorDiff - offset));
@@ -89,7 +82,7 @@ public class ColorEvaluator implements TypeEvaluator {
 
     // 关注2:将10进制颜色值转换成16进制。
     private String getHexString(int value) {
-        String hexString = Integer.toHexString(value);
+        String hexString = Integer.toHexString(value); // int => hexStr
         if (hexString.length() == 1) {
             hexString = "0" + hexString;
         }
