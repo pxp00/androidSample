@@ -43,6 +43,20 @@ SELECT name,country FROM Websites;
 * */
 
 
+/*
+	client: main-line
+		1. copy Aidl of server to client;  //Aidl -> generate Interface
+		2. bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+
+	intent  = new Intent(action)
+	serviceConnection(){
+		onServiceConnected(compName, IBinder service){
+			IAildX x = IAidlX.Stub.asInterface(service)
+		}
+	}
+*
+* */
+
 public class MainActivity extends Activity implements View.OnClickListener{
 	private static final String TAG = "MainActivity";
 	private Button unbindServices ;
@@ -55,6 +69,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
+			Log.d(TAG, "onServiceDisconnected: ");
 		}
 
 		@Override
@@ -75,6 +90,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 				Log.d(TAG, "onClick: bindServices");
 				Intent intent = new Intent("com.example.servicetest.MyAIDLService");
 				isBind = bindService(intent, connection, BIND_AUTO_CREATE);
+				Log.d(TAG, "onClick: isBind = " + isBind);
 			}
 		});
 
@@ -93,14 +109,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			if(isBind){
 				unbindService(connection);
 				isBind = false;
+				Log.d(TAG, "onClick: unbindSucc");
 			}
 		}else if(id == R.id.run_aidl_mtds){
 			int result = 0;
 			try {
 				result = myAIDLService.plus(1, 2);
 				String upperStr = myAIDLService.toUpperCase("comes from ClientTest");
-				Log.d("TAG", "result is " + result);
-				Log.d("TAG", "upperStr is " + upperStr);
+				Log.d(TAG, "result is " + result);
+				Log.d(TAG, "upperStr is " + upperStr);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}

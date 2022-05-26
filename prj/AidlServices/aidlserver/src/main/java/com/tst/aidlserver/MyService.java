@@ -5,29 +5,31 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-/*
-server:
-	1. new an aidl Interface;  // define a Interface
-	2. impl the interface;
-	3. new the obj and return obj by onBind;
 
-Note: service need register on manifest file only, needn't launcher screen
+/** flow:
+
+server:
+	 1. declare IAidlX File // generate IAidlX.Stub Interface
+	 2. impl IAidlX.Stub
+	 2. extends Service -> IBinder onBind() return IAidl.Stub
+
+Note: service need register on manifest file only, needn't launcher screen as a driver
+
 
 client:
-	1. copy & paste aidl folder
-	2. bindService;
-	3. get the obj by conn;
-	4. use obj;
+	1. copy & paste IAidlX folder
+	2. bindService(intent, conn, BIND_CREATE_AUTO);
+	3. onServiceConnected(IBinder service) -> IAildX objX= IAidlX.Stub.asInterface(IBinder service)
+	4. use objX
 
-fileName: XxxActivity
-folderName:  ActivityXxx
+fileName: XActivity
+folderName:  ActivityX
 * */
 
 
-/*
-reqs: server plus and  toUpperCase;
-	1.
-* */
+/**
+	reqs: server plus and  toUpperCase;
+ */
 
 public class MyService extends Service {
 	private static final String TAG = "MyService";
@@ -54,4 +56,15 @@ public class MyService extends Service {
 		}
 	};
 
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		Log.d(TAG, "onCreate: server");
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.d(TAG, "onDestroy: server");
+	}
 }

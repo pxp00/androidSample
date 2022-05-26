@@ -7,5 +7,4 @@ interface IMyAidlInterface {
     int plus(int a, int b);
     String toUpperCase(String str);
     String clientExistedOnly(String str); // clinet aidl existed the mtd only;
-
 }

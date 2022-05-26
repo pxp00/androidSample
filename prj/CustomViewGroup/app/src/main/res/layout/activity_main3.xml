@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding= "utf-8"?>
+<com.eg.customviewgroup.CustomLayout3
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:openxu= "http://schemas.android.com/apk/res-auto"
+    android:background="#33000000"
+    android:layout_width= "wrap_content"
+    android:layout_height= "wrap_content" >
+    <Button
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        openxu:layout_position= "left"
+        android:layout_marginLeft = "20dip"
+        android:backgroundTint= "#FF8247"
+        android:textColor= "#ffffff"
+        android:textSize="20dip"
+        android:padding= "20dip"
+        android:text="按钮1" />
+    <Button
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        android:layout_marginTop = "30dip"
+        openxu:layout_position= "right"
+        android:backgroundTint= "#8B0A50"
+        android:textColor= "#ffffff"
+        android:textSize="18dip"
+        android:padding= "10dip"
+        android:text="按钮2222222222222" />
+    <Button
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        android:layout_marginLeft = "30dip"
+        android:layout_marginBottom = "10dip"
+        openxu:layout_position= "bottom"
+        android:backgroundTint= "#7CFC00"
+        android:textColor= "#ffffff"
+        android:textSize="20dip"
+        android:padding= "15dip"
+        android:text="按钮333333" />
+    <Button
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        openxu:layout_position= "rightAndBottom"
+        android:layout_marginBottom = "30dip"
+        android:backgroundTint= "#1E90FF"
+        android:textColor= "#ffffff"
+        android:textSize="15dip"
+        android:padding= "10dip"
+        android:text="按钮4" />
+    <Button
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        openxu:layout_position= "center"
+        android:layout_marginBottom = "30dip"
+        android:layout_marginRight = "30dip"
+        android:backgroundTint= "#191970"
+        android:textColor= "#ffffff"
+        android:textSize="20dip"
+        android:padding= "15dip"
+        android:text="按钮5" />
+
+</com.eg.customviewgroup.CustomLayout3>

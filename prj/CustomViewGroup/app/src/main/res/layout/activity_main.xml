@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <Button
+        android:id="@+id/tst2"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tst2"/>
+    <Button
+        android:id="@+id/tst3"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tst3"/>
+    <com.eg.customviewgroup.CustomLayout
+        android:layout_gravity="right"
+        android:layout_width= "350dp"
+        android:layout_height= "wrap_content"
+        android:background="@drawable/border">
+        <Button
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint="#FF8247"
+
+            android:textColor= "#ffffff"
+            android:textSize="20dip"
+            android:padding= "20dip"
+            android:text="按钮1" />
+        <Button
+            android:theme="@style/ButtonStyle"
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint= "#8B0A50"
+            android:textColor= "#ffffff"
+            android:textSize="20dip"
+            android:padding= "10dip"
+            android:text="按钮2222222222222" />
+        <Button
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint= "#7CFC00"
+            android:textColor= "#ffffff"
+            android:textSize="20dip"
+            android:padding= "15dip"
+            android:text="按钮333333" />
+        <Button
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint= "#1E90FF"
+            android:textColor= "#ffffff"
+            android:textSize="10dip"
+            android:padding= "10dip"
+            android:text="按钮4" />
+        <Button
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint= "#191970"
+            android:textColor= "#ffffff"
+            android:textSize="20dip"
+            android:padding= "15dip"
+            android:text="按钮5" />
+        <Button
+            android:layout_width= "wrap_content"
+            android:layout_height= "wrap_content"
+            android:backgroundTint= "#7A67EE"
+            android:textColor= "#ffffff"
+            android:textSize="20dip"
+            android:padding= "20dip"
+            android:text="按钮6" />
+
+    </com.eg.customviewgroup.CustomLayout>
+</LinearLayout>
