@@ -13,24 +13,52 @@ import android.view.View;
  */
 
 /*
-    reqs: circle from (70,70) => (700, 1000)
-        1.animator // change props
-        2.->invalidate() ->onDraw()
+simple & specific eg:
+    reqs: point from (70,70) ->  (700, 1000) // -> invoke/ next; => introduce
+        1.animator.ofObject(new pointEvaluator, startPoint, endPoint) // change props
+        2.animator.addUpdateListener(updateLsr);  updateLsr.onAnimationUpdate ->invalidate()  // ->onDraw()
+        3.animator.start();
 
+    sum: updateLsr.onAnimatorUpdate ->objCur = getAnimatedValue() ->invalidate();
+
+concept:
     animator = ValueAnimator.ofObject(xEvaluator, objStart, objEnd)
     animator.addUpdateLsr(lsr(){
         onAnimationUpdate(animator){
-            objRet = (objType)animator.getAnimatedValue();
-            invalidate() -> onDraw()
+            objCur = (objType)animator.getAnimatedValue();
+            invalidate(); //  -> onDraw()
         }
     })
 
-    xEvaluator // onEvaluate(frac, objStart, objEnd) => objRet
+    xEvaluator // onEvaluate(frac, objStart, objEnd) => objCur;
         ->lsr.onAnimationUpdate(animator)
-        ->objRet = animator.getAnimatedValue()
-
-
+        ->objCur = animator.getAnimatedValue()
  * */
+
+/*
+simple & specific eg  => concept => complex things
+*/
+
+/*
+    interpolator ?
+
+    canvas ?
+
+    measure of view ?
+    layout ?
+
+* */
+    
+/*
+    reqs: point(70,70) ->point(700, 1000)
+
+    interpolator // frac + interval(()=>{xEvaluator, }, 1*1000);
+     -> curPoint = xEvaluator.evaluate(frac, start, end);
+     -> lsr.onAnimationUpdate(anim){
+        curPoint = (Point)anim.getAnimatedValue();
+        invalidate();  ->onDraw();
+        }
+* */
 public class MyView extends View {
     // 设置需要用到的变量
     public static final float RADIUS = 70f;// 圆的半径 = 70
@@ -75,6 +103,7 @@ public class MyView extends View {
             anim.setDuration(5000);
             // 设置动画时长
 
+            //  anim.addUpdateListener(onAnimationUpdate(animator){})
             // 设置 属性值的更新监听器
             // 即每当坐标值(Point值)更新一次,该方法就会被调用一次
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
