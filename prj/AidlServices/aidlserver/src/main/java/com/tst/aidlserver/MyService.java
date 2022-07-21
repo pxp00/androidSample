@@ -27,8 +27,23 @@ folderName:  ActivityX
 * */
 
 
-/**
-	reqs: server plus and  toUpperCase;
+/*
+	rqs: server.plus & toUpperCase;
+
+	1. extends Service, impl aidl.Stub;
+	2. register on Manifest;  // client access by intent.action
+
+	Server extends Service{
+		onBind(){
+			return mBinder;
+		}
+
+		mBinder = new IMyAidlInterface.Stub(){
+			int plus(int x, int y){
+				return x+y;
+			}
+		}
+	}
  */
 
 public class MyService extends Service {

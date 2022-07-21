@@ -16,10 +16,7 @@ import android.widget.Button;
 import com.tst.aidlserver.IMyAidlInterface;
 
 /*
-  client exist aidl file exist mtd but server without this mtd ?
-
-
-
+client exist aidl file exist mtd but server without this mtd ?
 
 insert into studs (name, age) values ("hugo", 19)
 select name, age from studs
@@ -44,17 +41,27 @@ SELECT name,country FROM Websites;
 
 
 /*
-	client: main-line
-		1. copy Aidl of server to client;  //Aidl -> generate Interface
-		2. bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+1. apply: rqs & flow
+2. analysis: src code(Qs, resume);
 
-	intent  = new Intent(action)
-	serviceConnection(){
-		onServiceConnected(compName, IBinder service){
-			IAildX x = IAidlX.Stub.asInterface(service)
-		}
-	}
-*
+rqs:
+	client -> server.plus(1,2)
+
+client:
+	1.fileX.aidl: pkgX.IAidlX // interface define/xxx.h: ret mtd(param) // io
+		int plus(int, int);
+
+	2.bindService(intent, conn, BIND_AUTO_CREATE);
+		a. intent => intend.action
+		b. conn.onServiceConnected  => server = IAidlX.Stub.asInterface(binder);
+* */
+
+/*
+record:
+	1. polymorphism; IAidlX.Stub extends Binder impl IAidlX;
+	2. hide icon ?
+	3. in,out tag ?
+	4. mtd, dataStruct ?
 * */
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -65,7 +72,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 	private IMyAidlInterface myAIDLService;
 
-	private ServiceConnection connection = new ServiceConnection() {
+	private ServiceConnection serviceConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
@@ -75,7 +82,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			myAIDLService = IMyAidlInterface.Stub.asInterface(service);
-			Log.d(TAG, "onServiceConnected: onServiceConnected");
+			Log.d(TAG, "onServiceConnected: cmpName = "+ name);
 		}
 	};
 
@@ -88,8 +95,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "onClick: bindServices");
-				Intent intent = new Intent("com.example.servicetest.MyAIDLService");
-				isBind = bindService(intent, connection, BIND_AUTO_CREATE);
+				Intent intent = new Intent("com.example.servicetest.MyAIDLService");  // intent-filter, filter service form
+				isBind = bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 				Log.d(TAG, "onClick: isBind = " + isBind);
 			}
 		});
@@ -107,7 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		int id = v.getId();
 		if(id == R.id.unbind_service){
 			if(isBind){
-				unbindService(connection);
+				unbindService(serviceConnection);
 				isBind = false;
 				Log.d(TAG, "onClick: unbindSucc");
 			}
