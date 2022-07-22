@@ -39,29 +39,36 @@ WHERE name='菜鸟教程';
 SELECT name,country FROM Websites;
 * */
 
-
-/*
-1. apply: rqs & flow
-2. analysis: src code(Qs, resume);
-
-rqs:
-	client -> server.plus(1,2)
-
-client:
-	1.fileX.aidl: pkgX.IAidlX // interface define/xxx.h: ret mtd(param) // io
-		int plus(int, int);
-
-	2.bindService(intent, conn, BIND_AUTO_CREATE);
-		a. intent => intend.action
-		b. conn.onServiceConnected  => server = IAidlX.Stub.asInterface(binder);
-* */
-
 /*
 record:
 	1. polymorphism; IAidlX.Stub extends Binder impl IAidlX;
 	2. hide icon ?
-	3. in,out tag ?
-	4. mtd, dataStruct ?
+	3. aidl
+		a. in,out tag ?
+		b. mtd, dataStruct ?
+* */
+
+
+/*
+t0, Iget ? ai ? once only, curTaskOnly(asapS), openBrave
+
+out/retrieve: apply(rqs & flow)
+	rqs: client -> 3 =  server.plus(1,2)  // i/o, mtdName
+
+	flow/steps:
+	server:
+		1. server extends service onBinder(){return new IAidlX.Stub(){ plus}}; register on Manifest serverAction
+		2. fileX.aidl(as .h file)a: pkg.IAidlX  // interface IAidlX{plus}  // android interface define language(i/o, mtdName);
+
+	client:
+		1. file.aidl(as .h file): pkg.IAidlX // interface IAidlX(){plus}
+		2. ret = bindService(serverIntent, ServiceConn, bind_auto_create);
+			serverIntent = new Intent(serverAction);
+			ServiceConn = new ServiceConnection(){
+				onServiceConnected(cmp, service){
+					server = IAidlX.Stub.asInterface(service);  // IBinder => service: p => c // IAidlX.Stub extend Binder impl IAidlX
+				}
+			}
 * */
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -82,7 +89,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			myAIDLService = IMyAidlInterface.Stub.asInterface(service);
-			Log.d(TAG, "onServiceConnected: cmpName = "+ name);
+			Log.d(TAG, "onServiceConnected: cmpName = "+ name); //{com.tst.aidlserver/com.tst.aidlserver.MyService}
 		}
 	};
 
