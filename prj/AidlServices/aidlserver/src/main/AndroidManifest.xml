@@ -32,3 +32,25 @@
     </application>
 
 </manifest>
+
+
+<!--
+    rfk
+    1. rqs & flow/framework & key point then copy details; open-book;
+    aidl => interface define
+
+rqs:
+    client ->server.plus(a,b)
+
+flow：
+    server
+        a. interfaceX declare;
+        b. extends service impl interfaceX.stub Binder,IBinder, IInterface
+        c. register on manifest;
+
+    client
+        a0. copy server.interfaceX  pkg+clsX
+        a1. bindService();
+        b. interfaceX objX= InterfaceX.stub.asInterface()
+        c. objX.plus
+-->

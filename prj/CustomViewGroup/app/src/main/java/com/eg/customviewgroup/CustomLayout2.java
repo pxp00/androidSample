@@ -9,51 +9,65 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- reqs&Qs:
-    1.CustomLayout(viewGroup)容纳所有子View(支持wrap_content);
-    2.自定义Layout_params, layout_position: 支持左上,左下，右上，右下，居中；
+/*
+    reqs&Qs:
+        1.CustomLayout(viewGroup)容纳所有子View(支持wrap_content);
+        2.自定义Layout_params, layout_position: 支持左上,左下，右上，右下，居中；
 
- src: https://openxu.blog.csdn.net/article/details/51500304
+    src: https://openxu.blog.csdn.net/article/details/51500304
 
+	----------------------------------------------------------------------------------
+    Q: viewGroupWidth < viewWidth & viewWidth < onDrawRectWidth ?
+        a. display range be determined by viewGroup;
+        b. viewWidth is valid, onDraw canvas will refer to viewWidth for coordinates;
 
- Qs:
- 1: viewGroupWidth < viewWidth & viewWidth < onDrawRectWidth ?
- A: viewWidth is valid, onDraw canvas will refer to viewWidth for coordinates, but the display range be determined by viewGroup.
+    Q: viewWidth < viewGroupWidth & viewWidth < onDrawRectWidth ?
+        a.display range be determined by viewWidth.
 
- 2: viewWidth < viewGroupWidth & viewWidth < onDrawRectWidth ?
- A:  the display range be determined by viewWidth.
+    3: draw View background color ?
+        A:
 
- 3: draw View background color ?
- A:
+	------------------------------------------------------------------------------------
+	main_line: flow and use API(input and output, function), ignore src code (API realize)
+		1. reqs;
+		2. apply firstly;
 
- main_line: flow and use API(input and output, function), ignore src code (API realize)
-  1. reqs;
-  2. apply firstly;
-
- Q: onMeasure(widthMeasureSpec, heightMeasureSpec), widthMeasureSpec ?
- A: widthMeasureSpec = getChildMeasureSpec(parentMeasureSpec, padding, childLp.width)  // availableSize = parentSize - padding
+	----------------------------------------------------------------------------------
+	Q: onMeasure(widthMeasureSpec, heightMeasureSpec), widthMeasureSpec ?
+		A: widthMeasureSpec = getChildMeasureSpec(parentMeasureSpec, padding, childLp.width)  // availableSize = parentSize - padding
 
     pMode  = EXACTLY, AT_MOST, UNSPECIFIED
     pSize
     chileLp.width = cSize, match_parent, wrap_content
 
- Q: getChildMeasureSpec ? cLp.width (developer reqs)firstly:
-	1. cLp.width = cSize  => mode = EXACTLY, size = cSize
-	2. p.mode = UNSPECIFIED  => mode = UNSPECIFIED, size = 0
-	3. p.mode = AT_MOST || cLp.width = wrap_content  => mode = AT_MOST, size = pSize
-        a. pMode = wrap_content & cLp.width = match_parent  => mode = AT_MOST, size = pSize
+    Q: c.width (developer rqs firstly) = getChildMeasureSpec ?
+		1. c.lpWidth = cSize & p.mode= X, p.size = X => c.mode = EXACTLY, c.size = cSize
+		2. p.mode = UNSPECIFIED  => mode = UNSPECIFIED, size = 0
+		3. p.mode = AT_MOST || cLp.width = wrap_content  => mode = AT_MOST, size = pSize
+            a. pMode = wrap_content & cLp.width = match_parent  => mode = AT_MOST, size = pSize
 
+	 Q: c.width (developer rqs firstly) = getChildMeasureSpec ?
+		1. c.lpWidth = cSize & p.mode= X, p.size = X => c.mode = EXACTLY, c.size = cSize
+		2. cLp.plWidth = wrap_content  => mode = AT_MOST, size = pSize
+
+	  pMode: EXACTLY, AT_MOST, UNSPECIFIED
+	  c.lpWidth:  cSize, match_parent, wrap_content
+
+	  a. c.lpWith = cSize & pMode = x  =>  cMode = EXACTLY, c.size = cSize
+	  b. c.lpWith = wrap_content, pMode = AT_MOST/EXACTLY => cMode = AT_MOST, c.size = p.size
+	  c. c.lpWith = match_parent, PMode = x  => c.Mode = AT_MOST/EXACTLY c.size = p.size
+
+    ----------------------------------------------------------------------------------
  */
 
-/**
- *  output:
- *  flow & API (input & output)
- *  onMeasure(wMS, hMS){ // MSpec
- *      super.onMeasure()  AT_MOST, EXACTLY size = pSize
- *
- *      setMeasuredDimension(wMS, hMS);
- *  }
+/*
+   output:
+   flow & API (input & output)
+   onMeasure(wMS, hMS){ // MSpec
+       super.onMeasure()  AT_MOST, EXACTLY size = pSize
+
+       setMeasuredDimension(wMS, hMS);
+   }
 
 
  1. container childView;  cWidth > pSize
@@ -92,7 +106,6 @@ import android.view.ViewGroup;
 			widt
         }
 
-
   // 1. get max width of child;
  // 1. cnt = getChildCount()
  for(i = 0, i < cnt; i++){
@@ -102,11 +115,7 @@ import android.view.ViewGroup;
  }
 
  // 2. get max height of parent
-
-
-
- }
-    2.position;
+    3. position;
 
 * */
 public class CustomLayout2 extends ViewGroup {

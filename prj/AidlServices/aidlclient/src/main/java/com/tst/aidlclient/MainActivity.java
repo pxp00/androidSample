@@ -1,6 +1,5 @@
 package com.tst.aidlclient;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -45,28 +44,31 @@ record:
 	2. hide icon ?
 	3. aidl
 		a. in,out tag ?
-		b. mtd, dataStruct ?
+		b. mtd, dataStruct ? parcel
 * */
 
 
 /*
 t0, Iget ? ai ? once only, curTaskOnly(asapS), openBrave
-
 out/retrieve: apply(rqs & flow)
-	rqs: client -> 3 =  server.plus(1,2)  // i/o, mtdName
 
-	flow/steps:
+rqs:
+	client -> 3 =  server.plus(1,2)  // i/o, mtdName
+
+flow/steps:
 	server:
-		1. server extends service onBinder(){return new IAidlX.Stub(){ plus}}; register on Manifest serverAction
-		2. fileX.aidl(as .h file)a: pkg.IAidlX  // interface IAidlX{plus}  // android interface define language(i/o, mtdName);
+		1. aidlClsX [as .h file, declare API]a: pkgX.IAidlX.mtdX  // interface IAidlX{plus()}  // android interface define language(i/o, mtdName);
+		2. server extends service onBinder(){return new IAidlX.Stub(){ plus}};
+		3. register on Manifest serverAction
+
 
 	client:
-		1. file.aidl(as .h file): pkg.IAidlX // interface IAidlX(){plus}
+		1. aidlClsX copy from server[as .h file, interface]: pkgX.IAidlX.mtdX
 		2. ret = bindService(serverIntent, ServiceConn, bind_auto_create);
-			serverIntent = new Intent(serverAction);
-			ServiceConn = new ServiceConnection(){
+			a.serverIntent = new Intent(serverAction);
+			b.ServiceConn = new ServiceConnection(){
 				onServiceConnected(cmp, service){
-					server = IAidlX.Stub.asInterface(service);  // IBinder => service: p => c // IAidlX.Stub extend Binder impl IAidlX
+					IAidlX server = IAidlX.Stub.asInterface(service);  // IBinder => service: p => c // IAidlX.Stub extend Binder impl IAidlX
 				}
 			}
 * */
@@ -102,7 +104,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "onClick: bindServices");
-				Intent intent = new Intent("com.example.servicetest.MyAIDLService");  // intent-filter, filter service form
+				Intent intent = new Intent("com.example.servicetest.MyAIDLService"); // server.action
+				intent.setPackage("com.tst.aidlserver");
 				isBind = bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 				Log.d(TAG, "onClick: isBind = " + isBind);
 			}
@@ -115,6 +118,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		unbindServices.setOnClickListener(this);
 		runAidlMtds.setOnClickListener(this);
 	}
+
+	// onion
 
 	@Override
 	public void onClick(View v) {
