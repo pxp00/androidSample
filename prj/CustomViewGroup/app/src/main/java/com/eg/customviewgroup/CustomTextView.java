@@ -61,8 +61,16 @@ class CustomTextView extends View {
    }
 
 
+   /*
+   getDefaultChild
+      1.c.size & p.X[at_most/exactly/unspecified] => c.mode[exactly], c.size
+      2.c.match_parent & p.X[at_most/exactly] => c.mode[at_most/exactly], p.remainSize
+
+      3.c.wrap_content & p.X[at_most/exactly] => c.mode[at_most], p.remainSize
+   * */
+
    @Override
-   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {  // when c.lp_width/height = wrap_content, need override;
       Log.d(TAG, "onMeasure: widthMS = " + MeasureSpec.toString(widthMeasureSpec));
       Log.d(TAG, "onMeasure: heightMS = " + MeasureSpec.toString(heightMeasureSpec));
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -79,6 +87,6 @@ class CustomTextView extends View {
       
       //绘制文字
       Log.d(TAG, "onDraw: mBound, height = " + mBound.height() + ", width = " + mBound.width());
-      canvas.drawText(mText, 0, mBound.height(), mPaint);
+      canvas.drawText(mText, 0, mBound.height(), mPaint);  // (x,y) => leftBottom coordinate
    }
 }
