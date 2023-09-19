@@ -67,24 +67,6 @@ import android.view.WindowManager;
 	canvas.size <= c.size <= p.size
 * */
 
-class TstLayout extends ViewGroup{
-
-	public TstLayout(Context context) {
-		super(context);
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		measureChildren(widthMeasureSpec, heightMeasureSpec);
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-	}
-
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-	}
-}
-
 public class FlowLayout extends ViewGroup {
 	private static final String TAG = "CustomLayout";
 
@@ -104,130 +86,88 @@ public class FlowLayout extends ViewGroup {
 	public LayoutParams generateLayoutParams(AttributeSet attrs) {
 		return super.generateLayoutParams(attrs);
 	}
+	/**
+	 * 要求所有的孩子测量自己的大小，然后根据这些孩子的大小完成自己的尺寸测量
+	 */
+	@SuppressLint("NewApi") @Override
+	protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {  // calculate reference dimension for onLayout
+		Log.d(TAG, "onMeasure: width = " + MeasureSpec.toString(widthMeasureSpec));
+		Log.d(TAG, "onMeasure: height = " + MeasureSpec.toString(heightMeasureSpec));
 
-	/*
-		measureChildren -> cMS = getChildMS(pMS, padding, cLP.mode)  => p.size/ cLp.size  match_parent & wrap_content, clp.size
+		// 计算出所有的childView的宽和高
+		measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-		c.canvas
-		c.lp
-		p.size
+		// 测量并保存layout的宽高(使用getDefaultSize时，wrap_content和match_perent都是填充屏幕)
+		// 稍后会重新写这个方法，能达到wrap_content的效果
+		// setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+		int usedWidth  = 0;
+		int maxHeight = 0;
+		int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+		int cnt = getChildCount();
+		int containerHeight = 0;
+		int containerWidth = 0;
 
-		t0, Iget ? better? jdoitnAbg; braveAi;
+		// iterate childs -> usedWith <= parentWidth
+		for(int i = 0; i < cnt; i ++){
+			View child  = getChildAt(i);
+			int childWidth = child.getMeasuredWidth();  // measureChildren set measureWidth/Height already.
+			int childHeight = child.getMeasuredHeight();
 
-		button
-	*/
+			usedWidth += childWidth;
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		measureChildren(widthMeasureSpec, heightMeasureSpec);  // measure children
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec); // c.size =  p.size/cLp.size
+			if(usedWidth <= parentWidth){  // width space enough
+
+			}else{  // line wrap [usedWidth > parentWidth]
+				containerHeight += maxHeight;  // add last line maxHeight
+
+				containerWidth = Math.max(containerWidth,(usedWidth - childWidth));  // compare last line maxWidth
+
+				usedWidth = 0;
+				usedWidth += childWidth;  // cur line useWidth
+				Log.d(TAG, "onMeasure: containerHeight = " + containerHeight);
+			}
+
+			maxHeight = Math.max(maxHeight, childHeight);
+		}
+
+		containerHeight += maxHeight;
+		containerWidth  += usedWidth;
+
+		Log.d(TAG, "onMeasure: finalContainerHeight = " + containerHeight);
+		Log.d(TAG, "onMeasure: finalContainerWidth = " + containerWidth);
+
+		if(MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST)  // AT_MOST, EXACTLY,
+			heightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST);
+
+		if(MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST)
+			widthMeasureSpec = MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST);
+
+		Log.d(TAG, "onMeasure: width size = " + MeasureSpec.getSize(widthMeasureSpec));
+
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);  // except wrap content
 	}
 
-//	/**
-//	 * 要求所有的孩子测量自己的大小，然后根据这些孩子的大小完成自己的尺寸测量
-//	 */
-//	@SuppressLint("NewApi") @Override
-//	protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {  // calculate reference dimension for onLayout
-//
-//		Log.d(TAG, "onMeasure: width = " + MeasureSpec.toString(widthMeasureSpec));
-//		Log.d(TAG, "onMeasure: height = " + MeasureSpec.toString(heightMeasureSpec));
-//
-//		// 计算出所有的childView的宽和高
-//		measureChildren(widthMeasureSpec, heightMeasureSpec);
-//
-//		// 测量并保存layout的宽高(使用getDefaultSize时，wrap_content和match_perent都是填充屏幕)
-//		// 稍后会重新写这个方法，能达到wrap_content的效果
-//		// setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
-//		int usedWidth  = 0;
-//		int maxHeight = 0;
-//		int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
-//		int cnt = getChildCount();
-//		int containerHeight = 0;
-//		int containerWidth = 0;
-//
-//		for(int i = 0; i < cnt; i ++){
-//			View child  = getChildAt(i);
-//			int childWidth = child.getMeasuredWidth();
-//			int childHeight = child.getMeasuredHeight();
-//
-//			usedWidth += childWidth;
-//
-//			if(usedWidth <= parentWidth){  // space enough
-//
-//			}else{  // wrap
-//				containerHeight += maxHeight;  // add last lineHeight
-//
-//				containerWidth += (usedWidth - childWidth);
-//
-//				usedWidth = 0;
-//				usedWidth += childWidth;
-//
-//				Log.d(TAG, "onMeasure: containerHeight = " + containerHeight);
-//			}
-//
-//			maxHeight = Math.max(maxHeight, childHeight);
-//		}
-//
-//		containerHeight += maxHeight;
-//		containerWidth  += usedWidth;
-//
-//		Log.d(TAG, "onMeasure: finalContainerHeight = " + containerHeight);
-//		Log.d(TAG, "onMeasure: finalContainerWidth = " + containerWidth);
-//
-//		if(MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST)  // AT_MOST, EXACTLY,
-//			heightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST);
-//
-//		if(MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST)
-//			widthMeasureSpec = MeasureSpec.makeMeasureSpec(containerWidth, MeasureSpec.AT_MOST);
-//
-//		Log.d(TAG, "onMeasure: width size = " + MeasureSpec.getSize(widthMeasureSpec));
-//
-//		super.onMeasure(widthMeasureSpec, heightMeasureSpec);  // except wrap content
-//	}
-
 	/**
-	 * 为所有的子控件摆放位置.
-	 *
+	 * 为所有的子控件摆放位置
 	 */
 
-
-	/*
-	lt, rb
-	onLayout(l, t, r, b);
-	p.size, cLp.size
-
-	parentWidth = getWidth()
-	child.layout(l, t, r, b);
-
-
-	p.size  // display range
-	c.size // refer by canvas
-	canvas.size
-
-	* */
 	@Override
 	protected void onLayout( boolean changed, int left, int top, int right, int bottom) {
 		Log.d(TAG, "onLayout: left = " + left + ", top = " + top + ", right = " + right + ", bottom = " + bottom); // onLayout: left = 530, top = 264, right = 1080, bottom = 2122  pixel
 		int curLineMaxHeight = 0;
-		int pHeight = getWidth();  // mRight - mLeft  // after invoke layout(), getWidth() valid.
+		int pWidth = getWidth();  // mRight - mLeft  // after invoke layout(), getWidth() valid.
 		int cLeft = 0;
 		int cTop = 0;
 		int cnt = getChildCount();
-
-		/*
-			for(i=0; i< cnt; i++){
-				c.layout(l, t, l + cWidth, t + cHeight);
-			}
-		* */
 
 		for(int i = 0; i < cnt; i ++){
 			View child  = getChildAt(i);
 			int cWidth = child.getMeasuredWidth();  // after invoke measure, getMeasuredWidth() valid.
 			int cHeight = child.getMeasuredHeight();
 
-			if(cLeft + cWidth <= pHeight){  // space enough
+			if(cLeft + cWidth <= pWidth){  // space enough
 
-			}else{  // wrap
+			}else{  // line wrap
 				cTop += curLineMaxHeight;  // cTop += lastLineMaxHeight
 				curLineMaxHeight = 0;  //curLine
 

@@ -13,9 +13,26 @@
         android:layout_height= "200dp" >
 
     <com.eg.customviewgroup.CustomTextView
-        android:layout_width= "100dp"
-        android:layout_height= "100dp"
+        android:layout_width= "match_parent"
+        android:layout_height= "match_parent"
         openxu:layout_position= "left" />
+
+<!--    c.lp = match_parent[follow p.ms]   p.modeX = exactly, at_most
+
+        c.mode = p.modeX exactly/at_most
+        c.size = p.size
+
+        c.lp = wrap_content  p.modeX
+        c.mode = at_most
+
+
+        lp = match_parent/ wrap_content/ size
+
+        size  onMeasure  // size
+        layout  onLayout // layout
+        style  onDraw  // style
+
+-->
 
     <Button
         android:layout_width= "wrap_content"

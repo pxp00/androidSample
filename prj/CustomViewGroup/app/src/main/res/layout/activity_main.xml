@@ -26,12 +26,12 @@
         android:text="@string/tst3"/>
 
     <com.eg.customviewgroup.FlowLayout
-        android:layout_gravity="right"
+        android:layout_gravity="center"
         android:layout_width= "200dp"
         android:layout_height= "wrap_content"
         android:background="@drawable/border">
         <Button
-            android:layout_width= "wrap_content"
+            android:layout_width= "400dp"
             android:layout_height= "wrap_content"
             android:layout_margin="20dp"
             android:paddingHorizontal="20dp"

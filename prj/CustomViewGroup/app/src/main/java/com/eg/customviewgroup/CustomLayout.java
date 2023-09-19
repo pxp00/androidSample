@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
  main_line: ignore details, kp: main_flow(steps) and use API(input and output, function)
     1. reqs;
-    2. apply firstly; // flow & steps & API => details
+    2. apply firstly; // flow & API =>  copy & debug details
 
  Qs:
     1. final display size ?
@@ -36,6 +36,17 @@ import android.view.ViewGroup;
     A: relative position
 
  */
+
+/*
+	g,p,c,view
+	p.onMeasure()
+	c.wrapContent // need c.size and set
+
+	c.match_parent
+	c.size > p.Size
+
+* */
+
 public class CustomLayout extends ViewGroup {
 	private static final String TAG = "CustomLayout";
 
@@ -59,15 +70,17 @@ public class CustomLayout extends ViewGroup {
 	/**
 	 * 要求所有的孩子测量自己的大小，然后根据这些孩子的大小完成自己的尺寸测量
 	 */
+
 	@SuppressLint("NewApi") @Override
 	protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {  // calculate reference dimension for onLayout
 
 		Log.d(TAG, "onMeasure: width = " + MeasureSpec.toString(widthMeasureSpec));
 		Log.d(TAG, "onMeasure: height = " + MeasureSpec.toString(heightMeasureSpec));
 
-		// 计算出所有的childView的宽和高
+		// 1. 计算出所有的childView的宽和高
 		measureChildren(widthMeasureSpec, heightMeasureSpec);
-		
+
+		// 2.calculate viewGroup size when groupView.mode = at_most
 		// 测量并保存layout的宽高(使用getDefaultSize时，wrap_content和match_perent都是填充屏幕)
 		// 稍后会重新写这个方法，能达到wrap_content的效果
 		// setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
@@ -87,12 +100,11 @@ public class CustomLayout extends ViewGroup {
 
 			if(usedWidth <= parentWidth){  // space enough
 
-			}else{  // wrap
+			}else{  // wrap a line [width isn't enough]
 				containerWidth += (usedWidth - childWidth);
 
 				usedWidth = 0;
 				usedWidth += childWidth;
-
 
 				containerHeight += maxHeight;
 				Log.d(TAG, "onMeasure: containerHeight = " + containerHeight);
@@ -114,6 +126,7 @@ public class CustomLayout extends ViewGroup {
 
 		Log.d(TAG, "onMeasure: width size = " + MeasureSpec.getSize(widthMeasureSpec));
 
+		// setMeasureSpec(wMs, hMs)
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);  // except wrap content
 	}
 
