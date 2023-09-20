@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding= "utf-8"?>
 <resources>
-    <declare-styleable name ="CustomLayout">
-        <attr name ="layout_position">
+    <declare-styleable name ="CustomLayout2_layout">
+        <attr name ="position">
             <enum name ="center" value="0" />
             <enum name ="left" value="1" />
             <enum name ="right" value="2" />

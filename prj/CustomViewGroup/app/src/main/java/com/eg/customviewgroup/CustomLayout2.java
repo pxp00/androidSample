@@ -17,46 +17,33 @@ import android.view.ViewGroup;
     src: https://openxu.blog.csdn.net/article/details/51500304
 
 	----------------------------------------------------------------------------------
-    Q: viewGroupWidth < viewWidth & viewWidth < onDrawRectWidth ?
+    Q1: viewGroupWidth < viewWidth & viewWidth < onDrawRectWidth ?
         a. display range be determined by viewGroup;
         b. viewWidth is valid, onDraw canvas will refer to viewWidth for coordinates;
 
-    Q: viewWidth < viewGroupWidth & viewWidth < onDrawRectWidth ?
+    Q2: viewWidth < viewGroupWidth & viewWidth < onDrawRectWidth ?
         a.display range be determined by viewWidth.
 
-    3: draw View background color ?
-        A:
+    Q3: draw View background color ?
+        S1:
 
 	------------------------------------------------------------------------------------
 	main_line: flow and use API(input and output, function), ignore src code (API realize)
 		1. reqs;
 		2. apply firstly;
-
 	----------------------------------------------------------------------------------
-	Q: onMeasure(widthMeasureSpec, heightMeasureSpec), widthMeasureSpec ?
-		A: widthMeasureSpec = getChildMeasureSpec(parentMeasureSpec, padding, childLp.width)  // availableSize = parentSize - padding
+	Q: onMeasure(widthMeasureSpec, heightMeasureSpec), where to get widthMeasureSpec ?
+		1. pView ->measureChildren() ->measureChild ->getChildMeasureSpec() ->c.measure()[prepare] ->c.onMeasure()
+		2. widthMeasureSpec = getChildMeasureSpec(pMeasureSpec, padding, c.LpWidth)  // c.availableSize[p.remainSize] = parentSize - padding
 
-    pMode  = EXACTLY, AT_MOST, UNSPECIFIED
-    pSize
-    chileLp.width = cSize, match_parent, wrap_content
+	Q: c.lpWidth [developer's rqs firstly] = getChildMeasureSpec ?
+		1. c.lpWidth = cSize & p.mode=EXACTLY/AT_MOST/UNSPECIFIED => c.mode = EXACTLY, c.size = cSize
+			a. p.mode = UNSPECIFIED  => c.mode = UNSPECIFIED, size = targetSdk < 23[6.0,M]? 0:pSize
+		2. c.lpWidth = wrap_content & p.mode = AT_MOST/EXACTLY => c.mode = AT_MOST, c.size = pSize
+		3. c.lpWidth = match_parent[follow  parent] &  p.mode = AT_MOST/EXACTLY => c.mode = p.mode, c.size = pSize
 
-    Q: c.width (developer rqs firstly) = getChildMeasureSpec ?
-		1. c.lpWidth = cSize & p.mode= X, p.size = X => c.mode = EXACTLY, c.size = cSize
-		2. p.mode = UNSPECIFIED  => mode = UNSPECIFIED, size = 0
-		3. p.mode = AT_MOST || cLp.width = wrap_content  => mode = AT_MOST, size = pSize
-            a. pMode = wrap_content & cLp.width = match_parent  => mode = AT_MOST, size = pSize
-
-	 Q: c.width (developer rqs firstly) = getChildMeasureSpec ?
-		1. c.lpWidth = cSize & p.mode= X, p.size = X => c.mode = EXACTLY, c.size = cSize
-		2. cLp.plWidth = wrap_content  => mode = AT_MOST, size = pSize
-
-	  pMode: EXACTLY, AT_MOST, UNSPECIFIED
-	  c.lpWidth:  cSize, match_parent, wrap_content
-
-	  a. c.lpWith = cSize & pMode = x  =>  cMode = EXACTLY, c.size = cSize
-	  b. c.lpWith = wrap_content, pMode = AT_MOST/EXACTLY => cMode = AT_MOST, c.size = p.size
-	  c. c.lpWith = match_parent, PMode = x  => c.Mode = AT_MOST/EXACTLY c.size = p.size
-
+		pMode: EXACTLY, AT_MOST, UNSPECIFIED
+		c.lpWidth:  cSize, match_parent, wrap_content
     ----------------------------------------------------------------------------------
  */
 
@@ -144,9 +131,9 @@ public class CustomLayout2 extends ViewGroup {
 
 		public CustomLayoutParams(Context c, AttributeSet attrs) {
 			super(c, attrs);
-			TypedArray a = c.obtainStyledAttributes(attrs,R.styleable.CustomLayout );
+			TypedArray a = c.obtainStyledAttributes(attrs,R.styleable.CustomLayout2_layout);
 			//获取设置在子控件上的位置属性
-			position = a.getInt(R.styleable.CustomLayout_layout_position ,position );
+			position = a.getInt(R.styleable.CustomLayout2_layout_position ,position );
 
 			a.recycle();
 		}
@@ -267,7 +254,7 @@ public class CustomLayout2 extends ViewGroup {
 		CustomLayoutParams params = null;
 		for ( int i = 0; i < count; i++) {
 			View child = getChildAt(i);
-			// 注意此处不能使用getWidth和getHeight，这两个方法必须在onLayout执行完，才能正确获取宽高
+			// 注意此处c.View 不能使用getWidth和getHeight，这两个方法必须在c.layout执行完，才能正确获取宽高 // getWidth = mRight - mLeft;
 			childMeasureWidth = child.getMeasuredWidth();
 			childMeasureHeight = child.getMeasuredHeight();
 

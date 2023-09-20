@@ -71,6 +71,12 @@ public class CustomLayout extends ViewGroup {
 	 * 要求所有的孩子测量自己的大小，然后根据这些孩子的大小完成自己的尺寸测量
 	 */
 
+	/*
+		1. onMeasure -> measureChildren() -> measureViewGroup -> setMeasuredDimension()
+		2. onLayout ->
+	* */
+
+
 	@SuppressLint("NewApi") @Override
 	protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec) {  // calculate reference dimension for onLayout
 
@@ -80,7 +86,7 @@ public class CustomLayout extends ViewGroup {
 		// 1. 计算出所有的childView的宽和高
 		measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-		// 2.calculate viewGroup size when groupView.mode = at_most
+		// 2.calculate viewGroup size, when groupView.mode = at_most
 		// 测量并保存layout的宽高(使用getDefaultSize时，wrap_content和match_perent都是填充屏幕)
 		// 稍后会重新写这个方法，能达到wrap_content的效果
 		// setMeasuredDimension( getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
@@ -118,7 +124,7 @@ public class CustomLayout extends ViewGroup {
 
 		Log.d(TAG, "onMeasure: finalontainerHeight = " + containerHeight);
 
-		if(MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST)
+		if(MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST)  // when c.mode = at_most, need change size only
 			heightMeasureSpec = MeasureSpec.makeMeasureSpec(containerHeight, MeasureSpec.AT_MOST);
 
 		if(MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST)
@@ -127,7 +133,7 @@ public class CustomLayout extends ViewGroup {
 		Log.d(TAG, "onMeasure: width size = " + MeasureSpec.getSize(widthMeasureSpec));
 
 		// setMeasureSpec(wMs, hMs)
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);  // except wrap content
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
 	/**
@@ -138,14 +144,14 @@ public class CustomLayout extends ViewGroup {
 		Log.d(TAG, "onLayout: left = " + left + ", top = " + top + ", right = " + right + ", bottom = " + bottom);
 		int usedWidth  = 0;
 		int maxHeight = 0;
-		int parentWidth = getWidth();
+		int parentWidth = getWidth();  // after view.layout getWidth() =  mRight - mLeft
 		int childL = 0;
 		int childT = 0;
 		int cnt = getChildCount();
 
 		for(int i = 0; i < cnt; i ++){
 			View child  = getChildAt(i);
-			int childWidth = child.getMeasuredWidth();
+			int childWidth = child.getMeasuredWidth();  // after measure view.setMeasureDimension(), mMeasuredWidth
 			int childHeight = child.getMeasuredHeight();
 
 			usedWidth += childWidth;
