@@ -55,9 +55,9 @@ public class CustomLayout3 extends ViewGroup {
 
 		public CustomLayoutParams(Context c, AttributeSet attrs) {
 			super(c, attrs);
-			TypedArray a = c.obtainStyledAttributes(attrs,R.styleable.CustomLayout );
+			TypedArray a = c.obtainStyledAttributes(attrs,R.styleable.CustomLayout2_layout );
 			//获取设置在子控件上的位置属性
-			position = a.getInt(R.styleable.CustomLayout_layout_position ,position );
+			position = a.getInt(R.styleable.CustomLayout2_layout_position ,position );
 
 			a.recycle();
 		}
