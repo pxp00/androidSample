@@ -29,6 +29,55 @@ import android.view.ViewGroup;
         onMeasure: totalWidth = cWidth + leftMargin + rightMargin
         onLayout: x +leftMargin -rightMargin; y +topMargin -bottomMargin;
  */
+
+
+/*
+rqs: lp_position, lp_margin_left
+	<pLayout/>
+		<childView
+			lp_position
+			lp_margin_left
+			/>
+
+flow:
+	1. pLayout.pLayoutParams extends MarginLayoutParams, override pLp.constructors[3];
+	2. override 4 mtds: generateLayoutParams(attrs), generateLayoutParams(lp), generateDefaultLayoutParams(), checkLayoutParams -> pLp
+*/
+
+/*
+src: analysis
+	lp = pView.generateLayoutParameters(cAttr);  // pView is viewGroup.LayoutParams
+	cView.setLayoutParameters(lp) // cView is view
+* */
+
+/*
+	1.focus on my career only;
+	2.tz, Iget? brvAi&hS&noRegret;
+* */
+
+/*
+	brvAi&hS
+	syncData -> downloadApp;
+	upload log file;
+	MDM -> reboot -> updateApp;
+
+	1. c.lp = wrap_content is invalid ?
+
+	c.lp = size  => c.mode = exactly  c.size = size;
+	c.lp = wrap_content = c.mode = at_most, c.size = p.size;
+
+
+
+	getChildMeasure(pMs, padding, c.lp) ->c.onMeasure() ->at_most
+	c.lp = match_parent
+* */
+
+/*
+	tstCase:
+		amt = 1000  9F34 = 1F
+		amt = 1001  9F34 = 1E
+* */
+
 public class CustomLayout3 extends ViewGroup {
 	private static final String TAG = "CustomLayout";
 

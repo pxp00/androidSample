@@ -6,6 +6,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
+/*
+	->A.dispatchTouchEvent ->A.onInterceptTouchEvent ->vgp.dispatch ...-> A.onTouch ->A.onTouchEvent
+	Acty -> G1 -> G2[onIntercept => true] -> V3
+
+* */
+
 class G2 extends RelativeLayout {
 	private static final String TAG = "G2";
 	public G2(Context context) {
@@ -26,9 +32,9 @@ class G2 extends RelativeLayout {
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		Log.i(TAG, "onInterceptTouchEvent:  action = " +  ev.getAction());
 
-		if(ev.getAction() == 2){
-			return true;
-		}
+//		if(ev.getAction() == 2){
+//			return true;
+//		}
 		return super.onInterceptTouchEvent(ev);
 	}
 
@@ -36,6 +42,7 @@ class G2 extends RelativeLayout {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.i(TAG, "onTouchEvent: action = " +  event.getAction());
+//		return true;
 		return super.onTouchEvent(event);
 	}
 }

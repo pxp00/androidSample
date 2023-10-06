@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-class V3 extends TextView {
+class V3 extends androidx.appcompat.widget.AppCompatTextView {
 	private static final String TAG = "V3";
 	public V3(Context context) {
 		super(context);
@@ -27,9 +27,9 @@ class V3 extends TextView {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.e(TAG, "onTouchEvent:  action = " +  event.getAction() );
-		if(event.getAction() == 0){
-			return true;
-		}
+//		if(event.getAction() == 0){
+//			return true;
+//		}
 		return super.onTouchEvent(event);
 	}
 }
