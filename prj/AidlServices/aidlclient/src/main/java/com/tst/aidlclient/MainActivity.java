@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -73,6 +74,51 @@ flow/steps:
 			}
 * */
 
+/*
+tzu, Iget? hS&abS
+
+eg&onion:
+	1. apply firstly, proficient on flow & steps; knowledge can;
+	2. kp
+	3. analysis
+
+	rqs&Q: client -> server.plus(a, b);
+
+	flow&steps:
+		server:  1.declare 2.define/impl 3.register
+			1. interfaceX.aidl // declare
+				int plus(int a, int b);
+
+			2. server impl service  // define, impl
+				.onBind() return impl interfaceX.stub[IBind, interfaceX]
+
+			3. manifest server  // register, action
+
+		client: 1.declare; 2.bindService; 3.interfaceXObj;
+			1. serverI.aidl  // pkg + cls
+			2. bindService(intent, serviceConn(service))
+			3. interfaceX.stub.asInterface(service)  // objX
+
+		interface.stub[Binder]
+		interfaceX.stub.asInterface
+
+kp1:
+interfaceX.stub [IBinder, interfaceX]
+	a.IBinder onBind()
+	b.onServiceConnected(IBinder service)
+
+	1. mBinder =  new interfaceX.stub(){}
+	2. interfaceX x =  interfaceX.stub.asInterface(mBinder);
+
+kp2:
+	unbind check
+
+kp3:
+	bindService by mtd
+
+
+* */
+
 public class MainActivity extends Activity implements View.OnClickListener{
 	private static final String TAG = "MainActivity";
 	private Button unbindServices ;
@@ -105,7 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			public void onClick(View v) {
 				Log.d(TAG, "onClick: bindServices");
 				Intent intent = new Intent("com.example.servicetest.MyAIDLService"); // server.action
-				intent.setPackage("com.tst.aidlserver");
+				intent.setPackage("com.tst.aidlserver");  // pkg
 				isBind = bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 				Log.d(TAG, "onClick: isBind = " + isBind);
 			}
@@ -135,8 +181,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
 			try {
 				result = myAIDLService.plus(1, 2);
 				String upperStr = myAIDLService.toUpperCase("comes from ClientTest");
-				Log.d(TAG, "result is " + result);
-				Log.d(TAG, "upperStr is " + upperStr);
+				Log.d(TAG, "result = " + result);
+				Log.d(TAG, "upperStr = " + upperStr);
+
+				/*
+					0.invoke a method exist on client only ?
+						a. client without exception, could return normally;
+						b. server without exception;
+				* */
+//				Log.e(TAG, "onClick: bf invoke clientExistOnly()");
+//				String ret =  myAIDLService.clientExistedOnly();
+//				Log.e(TAG, "onClick: aft  clientExistOnly() ret = " + ret);  // clientExistOnlyRet = null
+
+				Log.e(TAG, "onClick: bf myAIDLService.isMatched");
+				boolean isMatched = myAIDLService.isMatched("clientData");
+				Log.e(TAG, "onClick: aft myAIDLService.isMatched  = " + isMatched);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
